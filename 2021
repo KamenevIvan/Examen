@@ -1,0 +1,98 @@
+from random import randint
+
+def convert_to(number, base =7, upper=False):
+    result = ''
+    while number > 0:
+        result = str(number % base) + result
+        number //= base
+    return result
+
+def t1(n):
+    if n<=3:
+        return n
+    elif n <=32:
+        return n//4+t1(n-3)
+    else:
+        return 2*t1(n-5)
+
+def t2():
+    counter = 0
+    for i in range(100000, 900009):
+        if i%11 == 0 and i%55 != 0:
+            if int(str(i)[-1])+int(convert_to(i)[-1]) == 10:
+                counter+=1
+                res = i
+    print(counter, res)
+
+def t3():
+    with open('inputt3.txt', 'r') as f:
+        line = f.read()
+        line+="0"
+        maxcounter = 0
+        curcounter = ""
+        index = 0
+        for x in range(len(line)):
+            if x+1 != len(line):
+                if line[x] == line[x+1]:
+                    curcounter= curcounter + str(line[x])                            
+                else:
+                    curcounter+=curcounter[0]
+                    if len(curcounter) > maxcounter:
+                        maxcounter = len(curcounter)
+                        index = line.find(curcounter)
+                    curcounter = ""
+        print(index, maxcounter)
+                
+def t4():
+    for i in range(81234, 134689):
+        div = [i]
+        divcounter = 0
+        for x in range(2, i):
+            if i%x == 0:
+                div.append(x)
+        if len(div) == 4:
+                print(div)
+
+def t5():
+    with open('inputt5.txt', 'r') as f:        
+        maxstore, numusr = f.readline().split()   
+        print(maxstore, numusr)
+        curUsedStore = 0
+        curNumOfUser = 0
+        curMaxUser = 0
+        allUseres = [int(line) for line in f]
+        
+        for x in sorted(allUseres):
+            if curUsedStore+x <= int(maxstore):
+                curUsedStore+=x
+                curNumOfUser+=1
+            else:
+                break
+        for i in list(reversed(sorted(allUseres))):
+            if i <=int(maxstore):
+                curMaxUser = int(i)
+                break
+        print(curNumOfUser, curMaxUser)
+
+def t6():
+    with open('inputt6.txt') as f:
+        s = f.readlines()
+        n = int(s[0])  
+        summi = 0
+        d = 10**6
+        for i in range(1, n + 1):
+            x, y = map(int, s[i].split())
+            summi += max(x, y)
+            if abs(x - y) % 3 != 0:
+                d = min(d, abs(x - y))
+        if summi % 3 != 0:
+            print(summi)
+        else:
+            print(summi - d)
+
+#print(t1(10), t1(20), t1(50), t1(100), t1(4))
+#t2()
+#t3()
+#t4()
+#t5()
+t6() 
