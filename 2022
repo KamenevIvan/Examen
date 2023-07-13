@@ -1,0 +1,131 @@
+from ast import Num
+
+
+def simpleNum(a):
+    k = 0
+    for i in range(2, a // 2+1):
+        if (a % i == 0):
+            k = k+1
+    if (k <= 0):
+        return True
+    else:
+        return False
+
+def t11(n):
+    if n<10:
+        return n
+    else:
+        return n%10 + t11(n//10)
+def t12(n):
+    if n<10:
+        return n 
+    else:
+        return t12(t11(n))
+
+def t1():
+    sum = 0
+    for i in range(9,99):
+        sum+=t12(i)
+    print(sum)
+
+def t2():
+    counter = 0
+    for i in range(8800, 55535):
+        mult =1
+        for y in str(i):
+            mult*= int(y)
+        if mult>35 and str(i).find('7') > 0:
+            maxN = i
+            counter+=1
+            print(maxN, counter)
+
+def t3():
+    with open('2022inputt3.txt') as f:
+        d = f.readline()
+        maxlen = 0
+        curlen=0
+        for i in range(0, len(d)):
+            if(d[i]!='R' or d[i+1]!='P') and (d[i]!= 'P' or d[i+1]!= 'R'):
+                curlen+=1
+                print(curlen)
+            else:
+                if maxlen<curlen:
+                    maxlen = curlen
+                curlen = 0  
+        print(maxlen+1)
+
+def t4():
+    x = 550001
+    counter = 0
+    while True:
+        for i in range(x-1, 1, -1):
+            if x%i==0 and simpleNum(i) == False:
+                counter+=1
+                print(x, i)
+                break
+        if counter >=6:
+            break
+        x+=1
+
+def t5():
+    with open('2022inputt5.txt') as f:
+        spaceD, spaceE, num = map(int, f.readline().split())
+        sumD = 0
+        sumE = 0
+        savednum = 0
+        d = []
+        [d.append(i) for i in map(int, f.read().split())]
+        print(sorted(d))
+        for i in sorted(d):
+            if i<=500:
+                maxE = i 
+                if sumE+i<=spaceE:
+                    sumE+=i
+                    savednum+=1
+            elif i>500:
+                maxD = i 
+                if sumD+i<=spaceD:
+                    sumD+=i
+                    savednum+=1
+        print(savednum,maxE+maxD )
+
+
+#t1()
+#t2()
+t3()
+#t4()
+#t5()
+
+f = open('2022inputt61.txt')
+
+def get_triple():
+    a = list(map(int, f.readline().split()))
+    return [a[0]+a[1], a[1]+a[2], a[0]+a[2]]
+
+n = int(f.readline())
+s1 = get_triple()
+s2 = s1
+div1 = 3
+div2 = 17
+m = float('inf')
+for _ in range(n-1):
+    triple_sums = get_triple()
+    temp1 = [i + j for i in s1 for j in triple_sums]
+    temp2 = [i + j for i in s2 for j in triple_sums]
+    fake_s1 = [m]*div1
+    fake_s2 = [m]*div2
+    for x in temp1:
+        fake_s1[x%div1] = min(fake_s1[x%div1], x)
+    for x in temp2:
+        fake_s2[x%div2] = min(fake_s2[x%div2], x)     
+    s1 = [x for x in fake_s1 if x != m]
+    s2 = [x for x in fake_s2 if x != m]
+
+
+
+if s1[0] != s2[0]:
+    print(min(s1[0],s2[0]))
+else:
+    print(s2[div1])
+
+print(s1, s2) 
